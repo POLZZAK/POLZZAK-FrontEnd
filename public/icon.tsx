@@ -518,25 +518,25 @@ export const FilterArrowIcon = createIcon({
         fillRule="evenodd"
         clipRule="evenodd"
         d="M4 7.5C4 6.94772 4.44772 6.5 5 6.5H19C19.5523 6.5 20 6.94772 20 7.5C20 8.05228 19.5523 8.5 19 8.5H5C4.44772 8.5 4 8.05228 4 7.5Z"
-        fill="#6B6C76"
+        fill="#C5C6D0"
       />
       <path
         fillRule="evenodd"
         clipRule="evenodd"
         d="M20 17.5C20 16.9477 19.5523 16.5 19 16.5H5C4.44771 16.5 4 16.9477 4 17.5C4 18.0523 4.44771 18.5 5 18.5H19C19.5523 18.5 20 18.0523 20 17.5Z"
-        fill="#6B6C76"
+        fill="#C5C6D0"
       />
       <path
         fillRule="evenodd"
         clipRule="evenodd"
         d="M14.2929 2.79289C14.6834 2.40237 15.3166 2.40237 15.7071 2.79289L19.7071 6.79289C20.0976 7.18342 20.0976 7.81658 19.7071 8.20711L15.7071 12.2071C15.3166 12.5976 14.6834 12.5976 14.2929 12.2071C13.9024 11.8166 13.9024 11.1834 14.2929 10.7929L17.5858 7.5L14.2929 4.20711C13.9024 3.81658 13.9024 3.18342 14.2929 2.79289Z"
-        fill="#6B6C76"
+        fill="#C5C6D0"
       />
       <path
         fillRule="evenodd"
         clipRule="evenodd"
         d="M9.70711 12.7929C9.31658 12.4024 8.68342 12.4024 8.29289 12.7929L4.29289 16.7929C3.90237 17.1834 3.90237 17.8166 4.29289 18.2071L8.29289 22.2071C8.68342 22.5976 9.31658 22.5976 9.70711 22.2071C10.0976 21.8166 10.0976 21.1834 9.70711 20.7929L6.41421 17.5L9.70711 14.2071C10.0976 13.8166 10.0976 13.1834 9.70711 12.7929Z"
-        fill="#6B6C76"
+        fill="#C5C6D0"
       />
     </svg>
   ),
@@ -1423,6 +1423,227 @@ export const ChangeProfileIcon = createIcon({
           />
         </clipPath>
       </defs>
+    </svg>
+  ),
+});
+
+export const MailIcon = createIcon({
+  displayName: 'MailIcon',
+  viewBox: '0 0 14 14',
+  path: (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clipPath="url(#clip0_1564_24447)">
+        <path
+          d="M11.667 2.33301H2.33366C1.69199 2.33301 1.17283 2.85801 1.17283 3.49967L1.16699 10.4997C1.16699 11.1413 1.69199 11.6663 2.33366 11.6663H11.667C12.3087 11.6663 12.8337 11.1413 12.8337 10.4997V3.49967C12.8337 2.85801 12.3087 2.33301 11.667 2.33301ZM11.667 4.66634L7.00033 7.58301L2.33366 4.66634V3.49967L7.00033 6.41634L11.667 3.49967V4.66634Z"
+          fill="#9C9CA8"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_1564_24447">
+          <rect width="14" height="14" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  ),
+});
+
+export const ClipIcon = createIcon({
+  displayName: 'ClipIcon',
+  viewBox: '0 0 14 14',
+  path: (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M10.5 3H8.4C8.015 3 7.7 3.315 7.7 3.7C7.7 4.085 8.015 4.4 8.4 4.4L10.5 4.4C11.655 4.4 12.6 5.345 12.6 6.5C12.6 7.655 11.655 8.6 10.5 8.6H8.4C8.015 8.6 7.7 8.915 7.7 9.3C7.7 9.685 8.015 10 8.4 10H10.5C12.432 10 14 8.432 14 6.5C14 4.568 12.432 3 10.5 3ZM4.2 6.5C4.2 6.885 4.515 7.2 4.9 7.2L9.1 7.2C9.485 7.2 9.8 6.885 9.8 6.5C9.8 6.115 9.485 5.8 9.1 5.8H4.9C4.515 5.8 4.2 6.115 4.2 6.5ZM5.6 8.6H3.5C2.345 8.6 1.4 7.655 1.4 6.5C1.4 5.345 2.345 4.4 3.5 4.4H5.6C5.985 4.4 6.3 4.085 6.3 3.7C6.3 3.315 5.985 3 5.6 3L3.5 3C1.568 3 0 4.568 0 6.5C0 8.432 1.568 10 3.5 10H5.6C5.985 10 6.3 9.685 6.3 9.3C6.3 8.915 5.985 8.6 5.6 8.6Z"
+        fill="#9C9CA8"
+      />
+    </svg>
+  ),
+});
+
+export const XIcon = createIcon({
+  displayName: 'XIcon',
+  viewBox: '0 0 24 24',
+  path: (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M16.7782 7.22943C16.4824 6.93364 16.0046 6.93364 15.7088 7.22943L12 10.9306L8.29124 7.22184C7.99545 6.92605 7.51763 6.92605 7.22184 7.22184C6.92605 7.51763 6.92605 7.99545 7.22184 8.29124L10.9306 12L7.22184 15.7088C6.92605 16.0046 6.92605 16.4824 7.22184 16.7782C7.51763 17.0739 7.99545 17.0739 8.29124 16.7782L12 13.0694L15.7088 16.7782C16.0046 17.0739 16.4824 17.0739 16.7782 16.7782C17.0739 16.4824 17.0739 16.0046 16.7782 15.7088L13.0694 12L16.7782 8.29124C17.0664 8.00303 17.0664 7.51763 16.7782 7.22943Z"
+        fill="#9C9CA8"
+      />
+    </svg>
+  ),
+});
+
+export const SearchIcon = createIcon({
+  displayName: 'SearchIcon',
+  viewBox: '0 0 20 20',
+  path: (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clipPath="url(#clip0_2153_13411)">
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M13.4697 13.4697C13.7626 13.1768 14.2374 13.1768 14.5303 13.4697L19.5303 18.4697C19.8232 18.7626 19.8232 19.2374 19.5303 19.5303C19.2374 19.8232 18.7626 19.8232 18.4697 19.5303L13.4697 14.5303C13.1768 14.2374 13.1768 13.7626 13.4697 13.4697Z"
+          fill="#9C9CA8"
+        />
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M8.5 15.5C12.366 15.5 15.5 12.366 15.5 8.5C15.5 4.63401 12.366 1.5 8.5 1.5C4.63401 1.5 1.5 4.63401 1.5 8.5C1.5 12.366 4.63401 15.5 8.5 15.5ZM8.5 17C13.1944 17 17 13.1944 17 8.5C17 3.80558 13.1944 0 8.5 0C3.80558 0 0 3.80558 0 8.5C0 13.1944 3.80558 17 8.5 17Z"
+          fill="#9C9CA8"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_2153_13411">
+          <rect width="20" height="20" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  ),
+});
+
+export const BigSearchIcon = createIcon({
+  displayName: 'BigSearchIcon',
+  viewBox: '0 0 74 74',
+  path: (
+    <svg
+      width="74"
+      height="74"
+      viewBox="0 0 74 74"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clipPath="url(#clip0_1564_26563)">
+        <rect
+          x="45.6006"
+          y="50.1445"
+          width="6.42725"
+          height="14.3224"
+          transform="rotate(-45 45.6006 50.1445)"
+          fill="#DEDEDE"
+        />
+        <rect
+          x="50.9629"
+          y="58.7969"
+          width="11.0831"
+          height="21.562"
+          rx="5.54154"
+          transform="rotate(-45 50.9629 58.7969)"
+          fill="#9FA0A8"
+        />
+        <circle cx="29" cy="29" r="25.5" stroke="#E3E3E3" strokeWidth="7" />
+      </g>
+      <defs>
+        <clipPath id="clip0_1564_26563">
+          <rect width="74" height="74" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  ),
+});
+
+export const LoadingSpinner = createIcon({
+  displayName: 'LoadingSpinner',
+  viewBox: '0 0 38 38',
+  path: (
+    <svg
+      width="36"
+      height="36"
+      viewBox="0 0 36 36"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect x="15.5" y="2" width="4" height="10" rx="2" fill="#84CCFF" />
+      <rect
+        opacity="0.5"
+        x="15.5"
+        y="23"
+        width="4"
+        height="10"
+        rx="2"
+        fill="#84CCFF"
+      />
+      <rect
+        x="33"
+        y="15.5"
+        width="4"
+        height="10"
+        rx="2"
+        transform="rotate(90 33 15.5)"
+        fill="#84CCFF"
+      />
+      <rect
+        opacity="0.3"
+        x="12"
+        y="15.5"
+        width="4"
+        height="10"
+        rx="2"
+        transform="rotate(90 12 15.5)"
+        fill="#84CCFF"
+      />
+      <rect
+        opacity="0.6"
+        x="29.8743"
+        y="27.0469"
+        width="4"
+        height="10"
+        rx="2"
+        transform="rotate(135 29.8743 27.0469)"
+        fill="#84CCFF"
+      />
+      <rect
+        opacity="0.2"
+        x="15.0251"
+        y="12.1953"
+        width="4"
+        height="10"
+        rx="2"
+        transform="rotate(135 15.0251 12.1953)"
+        fill="#84CCFF"
+      />
+      <rect
+        x="27.0469"
+        y="5.125"
+        width="4"
+        height="10"
+        rx="2"
+        transform="rotate(45 27.0469 5.125)"
+        fill="#84CCFF"
+      />
+      <rect
+        opacity="0.4"
+        x="12.1953"
+        y="19.9766"
+        width="4"
+        height="10"
+        rx="2"
+        transform="rotate(45 12.1953 19.9766)"
+        fill="#84CCFF"
+      />
     </svg>
   ),
 });

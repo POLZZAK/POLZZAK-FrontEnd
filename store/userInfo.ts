@@ -9,24 +9,32 @@ import {
 const sessionStorage =
   typeof window !== 'undefined' ? window.sessionStorage : undefined;
 
-const { persistAtom } = recoilPersist();
+const { persistAtom } = recoilPersist({
+  key: 'polzzak-local',
+});
+
 const { persistAtom: sessionAtom } = recoilPersist({
-  key: 'sessionStorage',
+  key: 'polzzak-session',
   storage: sessionStorage,
 });
 
 interface UserInfo {
-  type: string;
+  memberType: string;
   nickname: string;
-  profileImage: string;
-  chains: string[];
+  profileUrl: string;
+  families: {
+    memberId: number;
+    nickname: string;
+    memberType: string;
+    profileUrl: string;
+  }[];
 }
 
 interface SignUpInfo {
   socialType: string;
   username: string;
   memberType: string;
-  parentType: string;
+  memberTypeDetailId: number;
   nickname: string;
 }
 
