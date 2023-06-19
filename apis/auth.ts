@@ -60,7 +60,8 @@ export const getAuthToken = async (
 ) => {
   try {
     const { data } = await http.post(
-      API_URLS.AUTH_TOKEN[type](authenticationCode)
+      API_URLS.AUTH_TOKEN[type](authenticationCode),
+      null
     );
     return data.access_token;
   } catch (error) {
@@ -72,15 +73,9 @@ export const getAuthToken = async (
 // 로그인 API
 export const login = async (type: string, oAuthAccessToken: string) => {
   try {
-    const { data }: LoginResponse = await http.post(
-      API_URLS.LOGIN(type),
-      {
-        oAuthAccessToken,
-      },
-      {
-        withCredentials: true,
-      }
-    );
+    const { data }: LoginResponse = await http.post(API_URLS.LOGIN(type), {
+      oAuthAccessToken,
+    });
     return data;
   } catch (error) {
     const err = error as LoginError;
