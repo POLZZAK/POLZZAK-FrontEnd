@@ -62,6 +62,40 @@ interface StampboardCreateInfo {
   missionContents: string[];
 }
 
+interface StampboardDetailResponse {
+  data: {
+    code: 200;
+    messages: null;
+    data: {
+      stampBoardId: number;
+      name: string;
+      status: string;
+      currentStampCount: number;
+      goalStampCount: 10 | 12 | 16 | 20 | 25 | 36 | 40 | 48 | 60;
+      reward: string;
+      missions: {
+        id: number;
+        content: string;
+      }[];
+      stamps: {
+        id: number;
+        stampDesignId: number;
+        missionContent: string;
+        createdDate: string;
+      }[];
+      missionRequestList: {
+        id: number;
+        missionId: number;
+        missionContent: string;
+        createdDate: string;
+      }[];
+      completedDate: string | null;
+      rewardDate: null;
+      createdDate: string;
+    };
+  };
+}
+
 export const stampboardList = async ({
   memberId,
   stampBoardGroup,
@@ -84,6 +118,59 @@ export const createStampboard = async (createInfo: StampboardCreateInfo) => {
   try {
     const { data } = await http.post(API_URLS.STAMPBOARD, createInfo);
     return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const stampboardDetail = async (stampboardId: string) => {
+  try {
+    const { data }: StampboardDetailResponse = await http.get(
+      `${API_URLS.STAMPBOARD}/${stampboardId}`
+    );
+    return data;
+  } catch (error) {
+    const err = error as StampboardListError;
+    return err.response.data;
+  }
+};
+
+export const stampMissionRequest = async (
+  stampBoardId: number,
+  missionId: number,
+  guardianId: number
+) => {
+  try {
+    await http.post(API_URLS.MISSION_REQUEST, {
+      stampBoardId,
+      missionId,
+      guardianId,
+    });
+  } catch (error) {
+    return error;
+  }
+};
+
+export const createStamp = async (
+  stampBoardId: number,
+  count: number,
+  missionId: number,
+  stampDesignId: number
+) => {
+  try {
+    await http.post(API_URLS.STAMP(stampBoardId), {
+      count,
+      missionId,
+      stampDesignId,
+    });
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteStampboard = async (stampBoardId: string) => {
+  try {
+    await http.delete(`${API_URLS.STAMPBOARD}/${stampBoardId}`);
   } catch (error) {
     return error;
   }
