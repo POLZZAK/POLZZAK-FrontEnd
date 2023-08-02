@@ -5,10 +5,11 @@ import {
   Modal,
   ModalContent,
   ModalOverlay,
-  Spinner,
   Text,
   VStack,
 } from '@chakra-ui/react';
+
+import Spinner from '../Common/Spinner';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -42,7 +43,7 @@ const ConfirmModal = ({
           gap="11px"
         >
           {isLoading ? (
-            <Spinner color="polzzak.default" size="md" />
+            <Spinner />
           ) : (
             <>
               <Button
@@ -53,7 +54,11 @@ const ConfirmModal = ({
                 borderRadius="8px"
                 onClick={handleClickCancelButton}
               >
-                <Text layerStyle="subtitle3" color="white" textAlign="center">
+                <Text
+                  layerStyle="subtitle16Sbd"
+                  color="white"
+                  textAlign="center"
+                >
                   {cancelMessage}
                 </Text>
               </Button>
@@ -65,7 +70,11 @@ const ConfirmModal = ({
                 borderRadius="8px"
                 onClick={handleClickConfirmButton}
               >
-                <Text layerStyle="subtitle3" color="white" textAlign="center">
+                <Text
+                  layerStyle="subtitle16Sbd"
+                  color="white"
+                  textAlign="center"
+                >
                   {confirmMessage}
                 </Text>
               </Button>
