@@ -1,35 +1,33 @@
 /* eslint-disable no-param-reassign */
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
 
 import { TOKEN_KEY } from '@/constants/auth';
 import { getLocalStorage } from '@/utils/storage';
 
 // API 주소
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-
-// axios 인스턴스에 인터셉터를 추가하는 함수
-const setInterceptor = (instance: AxiosInstance) => {
-  instance.interceptors.request.use(
-    (config) => {
-      // 헤더에 토큰 추가
-      const accessToken = getLocalStorage(TOKEN_KEY);
-      if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
-      }
-      return config;
-    },
-    (error) => Promise.reject(error)
-  );
-
-  instance.interceptors.response.use(
-    (response) => response,
-    (error) => Promise.reject(error)
-  );
-
-  return instance;
-};
+const googleAuth = 'https://oauth2.googleapis.com';
+const kakaoAuth = 'https://kauth.kakao.com';
 
 // axios 인스턴스 생성
-const http = setInterceptor(axios.create({ baseURL: API_BASE_URL }));
+// eslint-disable-next-line import/prefer-default-export
+export const http = axios.create({ baseURL: API_BASE_URL });
 
-export default http;
+http.interceptors.request.use(
+  (config) => {
+    // 헤더에 토큰 추가
+    const accessToken = getLocalStorage(TOKEN_KEY);
+    console.log(accessToken);
+    if (accessToken) {
+      if (
+        !config.url?.includes(googleAuth) &&
+        !config.url?.includes(kakaoAuth)
+      ) {
+        config.withCredentials = true;
+      }
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);

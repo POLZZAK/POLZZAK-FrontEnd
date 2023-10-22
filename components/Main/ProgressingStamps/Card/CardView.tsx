@@ -15,8 +15,9 @@ interface CardVAProps {
   messageColor: string;
   statusIcon: React.ReactNode;
   isRequest: boolean;
-  requestCount: number;
+  missionRequestCount: number;
   reward: string;
+  handleClickCard: () => void;
 }
 
 const CardView = ({
@@ -29,8 +30,9 @@ const CardView = ({
   messageColor,
   statusIcon,
   isRequest,
-  requestCount,
+  missionRequestCount,
   reward,
+  handleClickCard,
 }: CardVAProps) => (
   <VStack
     w="100%"
@@ -42,10 +44,18 @@ const CardView = ({
     borderRadius="8px"
     pos="relative"
     justify="space-between"
+    cursor="pointer"
+    onClick={handleClickCard}
   >
     <VStack w="100%" spacing="0px">
-      <Flex w="100%" justifyContent="space-between" align="center">
-        <Text layerStyle="title3" color="#3F3D3B">
+      <Flex w="100%" justifyContent="space-between" gap="16px" align="center">
+        <Text
+          layerStyle="title20Bd"
+          color="#3F3D3B"
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+        >
           {name}
         </Text>
         <ArrowIcon w={4} h={4} />
@@ -61,10 +71,10 @@ const CardView = ({
           transform="translate(-50%, 0%)"
         >
           <Box mb="10px">
-            <Text as="span" layerStyle="title1" color="polzzak.default">
+            <Text as="span" layerStyle="title24Sbd" color="polzzak.default">
               {currentStampCount}
             </Text>
-            <Text as="span" layerStyle="body16M" color="gray.400">
+            <Text as="span" layerStyle="subtitle16Md" color="gray.400">
               /{goalStampCount}
             </Text>
           </Box>
@@ -74,28 +84,26 @@ const CardView = ({
               borderRadius="10px"
               p="4px 12px"
               color="white"
-              layerStyle="body2"
+              layerStyle="body14Sbd"
               pos="relative"
             >
               {completeMessage}
               <Box
-                w={0}
-                h={0}
+                w="10px"
+                h="10px"
                 pos="absolute"
-                bottom="-15px"
+                bottom="-4px"
                 left="50%"
-                transform="translate(-50%, 0%)"
-                borderLeft="10px solid transparent"
-                borderRight="10px solid transparent"
-                borderTop={`10px solid ${messageColor}`}
-                borderBottom="10px solid transparent"
+                transform="translate(-50%, 0%) rotate(45deg)"
+                zIndex="-1"
+                bg={messageColor}
               />
             </Box>
           )}
           {statusIcon}
           {!isStampBoardComplete && (
             <Box
-              layerStyle="caption1"
+              layerStyle="caption12Sbd"
               color={isRequest ? 'polzzak.highlighted' : 'polzzak.default'}
               bg="blue.100"
               p="3px 12px"
@@ -104,7 +112,7 @@ const CardView = ({
             >
               도장 요청{' '}
               <Text as="span" fontWeight="700">
-                {requestCount}
+                {missionRequestCount}
               </Text>
               개
             </Box>
@@ -114,7 +122,7 @@ const CardView = ({
     </Box>
     <Flex w="100%" align="center" gap="8px">
       <Box
-        layerStyle="caption1"
+        layerStyle="caption12Sbd"
         color="white"
         p="4px 6px"
         bg="blue.400"
@@ -122,7 +130,7 @@ const CardView = ({
       >
         보상
       </Box>
-      <Text layerStyle="body2">{reward}</Text>
+      <Text layerStyle="body14Sbd">{reward}</Text>
     </Flex>
   </VStack>
 );

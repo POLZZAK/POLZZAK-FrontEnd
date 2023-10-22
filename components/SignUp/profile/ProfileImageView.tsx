@@ -1,6 +1,13 @@
-import { Box, Input, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  ComponentWithAs,
+  Icon,
+  IconProps,
+  Input,
+  VStack,
+} from '@chakra-ui/react';
 
-import { BasicProfileIcon, ProfileEditIcon } from '@/public/icon';
+import { ProfileEditIcon } from '@/public/icon';
 
 import NextStepButton from '../Button';
 
@@ -15,6 +22,8 @@ interface ProfileImageVAProps {
         url: string;
       }
     | undefined;
+  basicProfileIcon: ComponentWithAs<'svg', IconProps>;
+  isLoading: boolean;
 }
 
 const ProfileImageView = ({
@@ -23,6 +32,8 @@ const ProfileImageView = ({
   handleChangeProfile,
   profileRef,
   profileImage,
+  basicProfileIcon,
+  isLoading,
 }: ProfileImageVAProps) => (
   <VStack spacing="40px">
     <Box pos="relative">
@@ -36,7 +47,8 @@ const ProfileImageView = ({
           onClick={handleClickProfile}
         />
       ) : (
-        <BasicProfileIcon
+        <Icon
+          as={basicProfileIcon}
           w={127}
           h={127}
           cursor="pointer"
@@ -45,9 +57,6 @@ const ProfileImageView = ({
       )}
       <ProfileEditIcon w={29} h={29} pos="absolute" bottom={0} right={0} />
     </Box>
-    <Text fontSize="12px" color="gray.500">
-      사진을 설정하지 않으면 기본 사진으로 설정돼요
-    </Text>
     <Input
       type="file"
       accept="image/png"
@@ -55,8 +64,8 @@ const ProfileImageView = ({
       ref={profileRef}
       hidden
     />
-    <NextStepButton disabled={false} onClick={handleClickButton}>
-      가입 완료
+    <NextStepButton disabled={isLoading} onClick={handleClickButton}>
+      회원가입 완료
     </NextStepButton>
   </VStack>
 );

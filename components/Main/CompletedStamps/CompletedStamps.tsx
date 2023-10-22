@@ -1,39 +1,49 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { useRecoilValue } from 'recoil';
 
-import { totalCompletedStampData } from '@/constants/defaultValue';
-import { CompletedStampBoardPreview } from '@/interfaces/stampBoard';
-import { filterAtom } from '@/store/filter';
+import { familiesInfo } from '@/apis/family';
+import { stampboardList } from '@/apis/stamp';
+import { MainfilterAtom } from '@/store/filter';
 
 import CompletedStampsSkeleton from './CompletedStampsSkeleton';
 import CompletedStampsView from './CompletedStampsView';
 
-interface StampData {
-  nickname: string;
-  stamps: CompletedStampBoardPreview[];
-}
-
 const CompletedStamps = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [cards, setCard] = useState<StampData[]>(totalCompletedStampData);
-  const filter = useRecoilValue(filterAtom);
+  const { data: familyInfo } = useQuery(['families'], familiesInfo);
+  const families = familyInfo?.data?.families;
+  const [isNoFamily, setIsNoFamily] = useState(true);
+
+  const filter = useRecoilValue(MainfilterAtom);
+  const currentFilterId = families?.find(
+    (family) => family.nickname === filter
+  )?.memberId;
+
+  const { data, isLoading, refetch } = useQuery(
+    ['stampboardList', 'ended', filter],
+    () =>
+      stampboardList({
+        stampBoardGroup: 'ended',
+        partnerMemberId: currentFilterId,
+      }),
+    {
+      enabled: !isNoFamily,
+      cacheTime: 0,
+      staleTime: 0,
+    }
+  );
+
+  const cards = data?.data;
 
   const handleRefresh = async () => {
-    try {
-      const response: StampData[] = await axios.get('/api/stamp');
-      setCard(response);
-    } catch (error) {
-      console.log(error);
-    }
+    await refetch();
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-  }, [filter]);
+    const noFamily = families?.length === 0;
+
+    setIsNoFamily(noFamily);
+  }, [families]);
 
   const CompletedStampsVAProps = {
     handleRefresh,

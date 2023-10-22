@@ -1,67 +1,71 @@
 /* eslint-disable no-nested-ternary */
-import { useRecoilValue } from 'recoil';
+import { useRouter } from 'next/router';
+import { useQuery } from 'react-query';
 
+import { StampBoard } from '@/apis/stamp';
+import { userInfo } from '@/apis/user';
 import { CompleteIcon, HandIcon, NoRequestIcon } from '@/public/icon';
-import { userInfoAtom } from '@/store/userInfo';
 
 import CardView from './CardView';
 
-export interface CardProps {
-  name: string;
-  currentStampCount: number;
-  goalStampCount: number;
-  requestCount: number;
-  reward: string;
-  isCouponIssued: boolean;
-}
-
 const Card = ({
   name,
+  stampBoardId,
   currentStampCount,
   goalStampCount,
-  requestCount,
+  missionRequestCount,
   reward,
-  isCouponIssued,
-}: CardProps) => {
-  const { memberType } = useRecoilValue(userInfoAtom);
+  status,
+}: StampBoard) => {
+  const { push } = useRouter();
+  const { data: user } = useQuery(['userInfo'], userInfo);
+  const memberType = user?.data?.memberType;
+
+  const isKid = memberType?.name === 'KID';
+
   const percentage = (currentStampCount / goalStampCount) * 100;
   const isStampBoardComplete = currentStampCount === goalStampCount;
-  const isRequest = requestCount !== 0;
+  const isRequest = missionRequestCount !== 0;
 
-  const completeType = () => {
-    if (memberType === 'KID') {
-      if (isCouponIssued) {
-        return 'kidCoupon';
-      }
-      return 'kidComplete';
-    }
-    if (isCouponIssued) {
-      return 'parentCoupon';
-    }
-    return 'parentComplete';
+  const guardianMessageColor = {
+    progress: '',
+    completed: 'linear-gradient(90deg, #F0BC05 0%, #F67373 93.23%)',
+    issued_coupon: 'linear-gradient(272deg, #A3A1FF 0%, #55DEF1 100%)',
+    rewarded: '#FE6E6E',
   };
 
-  const completeMessage = {
-    kidCoupon: '쿠폰 선물이 있어요!',
-    kidComplete: '수고했어요!',
-    parentCoupon: '쿠폰 발급 완료!',
-    parentComplete: '쿠폰을 발급해주세요!',
+  const kidMessageColor = {
+    progress: '',
+    completed: 'linear-gradient(272deg, #A3A1FF 0%, #55DEF1 100%)',
+    issued_coupon: 'linear-gradient(90deg, #F0BC05 0%, #F67373 93.23%)',
+    rewarded: '#FE6E6E',
   };
 
-  const messageColor = {
-    kidCoupon: '#FE6E6E',
-    kidComplete: '#59B9FF',
-    parentCoupon: '#59B9FF',
-    parentComplete: '#FE6E6E',
+  const guardianStampboardMessage = {
+    progress: '',
+    completed: '쿠폰을 발급해주세요!',
+    issued_coupon: '쿠폰 발급 완료!',
+    rewarded: '',
+  };
+
+  const kidStampboardMessage = {
+    progress: '',
+    completed: '도장을 다 모았어요!',
+    issued_coupon: '쿠폰 선물이 있어요!',
+    rewarded: '',
   };
 
   const statusIcon = isStampBoardComplete ? (
-    <CompleteIcon w={76} h={70} />
+    <CompleteIcon w="86px" h="86px" />
   ) : isRequest ? (
-    <HandIcon w={76} h={67} />
+    <HandIcon w="86px" h="86px" />
   ) : (
-    <NoRequestIcon w={76} h={67} />
+    <NoRequestIcon w="86px" h="87px" />
   );
+
+  const handleClickCard = () => {
+    push(`/stamp-board/${stampBoardId}`);
+  };
 
   const CardVAProps = {
     name,
@@ -69,12 +73,17 @@ const Card = ({
     goalStampCount,
     percentage,
     isStampBoardComplete,
-    completeMessage: completeMessage[completeType()],
-    messageColor: messageColor[completeType()],
+    completeMessage: !isKid
+      ? guardianStampboardMessage[status]
+      : kidStampboardMessage[status],
+    messageColor: !isKid
+      ? guardianMessageColor[status]
+      : kidMessageColor[status],
     statusIcon,
     isRequest,
-    requestCount,
+    missionRequestCount,
     reward,
+    handleClickCard,
   };
 
   return <CardView {...CardVAProps} />;

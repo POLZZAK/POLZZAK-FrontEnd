@@ -3,10 +3,16 @@ import { Flex, Text } from '@chakra-ui/react';
 import { SearchIcon } from '@/public/icon';
 
 interface SearchInputVAProps {
+  userType: string;
+  isPathOnboarding: boolean;
   handleClickInputFrame: () => void;
 }
 
-const SearchInputView = ({ handleClickInputFrame }: SearchInputVAProps) => (
+const SearchInputView = ({
+  userType,
+  isPathOnboarding,
+  handleClickInputFrame,
+}: SearchInputVAProps) => (
   <Flex
     w="100%"
     borderRadius="8px"
@@ -18,8 +24,8 @@ const SearchInputView = ({ handleClickInputFrame }: SearchInputVAProps) => (
     justify="space-between"
     onClick={handleClickInputFrame}
   >
-    <Text layerStyle="body3" color="gray.500">
-      아이추가
+    <Text layerStyle="body14Md" color="gray.500">
+      {userType} {isPathOnboarding ? '닉네임 검색' : '추가'}
     </Text>
     <SearchIcon w="20px" h="20px" />
   </Flex>

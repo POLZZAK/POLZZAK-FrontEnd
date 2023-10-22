@@ -11,6 +11,10 @@ import ParentTypeView from './ParentTypeView';
 
 export const defaultParentTypes = [
   {
+    detail: '선택해 주세요',
+    memberTypeDetailId: 0,
+  },
+  {
     detail: '엄마',
     memberTypeDetailId: 2,
   },
@@ -70,13 +74,14 @@ const ParentType = () => {
     currentParentType === 0 || signUpInfo.memberType === 'KID';
 
   const handleChangeSwiper: (swiper: Swiper) => void = (swiper) => {
-    setSignupInfo((prev) => ({
-      ...prev,
-      memberTypeDetailId: parentTypes[swiper.realIndex].memberTypeDetailId,
-    }));
+    setCurrentParentType(parentTypes[swiper.realIndex].memberTypeDetailId);
   };
 
   const handleClickButton = () => {
+    setSignupInfo((prev) => ({
+      ...prev,
+      memberTypeDetailId: currentParentType,
+    }));
     push(ROUTES.SIGNUP.NICKNAME);
   };
 
@@ -87,6 +92,7 @@ const ParentType = () => {
         const parentTypeList = data.memberTypeDetailList.filter(
           ({ memberTypeDetailId }) => memberTypeDetailId !== 1
         );
+        parentTypeList.unshift(defaultParentTypes[0]);
         setParentTypes(parentTypeList);
       }
     };
@@ -95,7 +101,7 @@ const ParentType = () => {
 
   useEffect(() => {
     setCurrentParentType(signUpInfo.memberTypeDetailId);
-  }, [signUpInfo.memberTypeDetailId]);
+  }, [signUpInfo.memberTypeDetailId, parentTypes]);
 
   useEffect(() => {
     if (signUpInfo.memberType !== 'PARENT') {
@@ -107,6 +113,7 @@ const ParentType = () => {
     handleChangeSwiper,
     handleClickButton,
     currentParentType,
+    savedParentType: signUpInfo.memberTypeDetailId,
     parentTypes,
     buttonDisabled,
   };
