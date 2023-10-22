@@ -6,7 +6,7 @@ import { AlertIcon, CouponIcon, MainIcon, ProfileIcon } from '@/public/icon';
 export const menus = [
   {
     name: '메인',
-    path: '/main',
+    path: '/home',
     icon: <MainIcon w="23px" h="23px" />,
   },
   {
@@ -21,7 +21,7 @@ export const menus = [
   },
   {
     name: '마이페이지',
-    path: '/profile',
+    path: '/my-page',
     icon: <ProfileIcon w="23px" h="23px" />,
   },
 ];

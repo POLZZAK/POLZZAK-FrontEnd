@@ -5,20 +5,21 @@ import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useRecoilValue } from 'recoil';
 
+import { familiesInfo } from '@/apis/family';
 import { stampboardList } from '@/apis/stamp';
-import { filterAtom } from '@/store/filter';
-import { userInfoAtom } from '@/store/userInfo';
+import { MainfilterAtom } from '@/store/filter';
 
 import ProgressingStampsNoFamiles from './ProgressingStampsNoFamiles';
 import ProgressingStampsSkeleton from './ProgressingStampsSkeleton';
 import ProgressingStampsView from './ProgressingStampsView';
 
 const ProgressingStamps = () => {
-  const { families } = useRecoilValue(userInfoAtom);
+  const { data: familyInfo } = useQuery(['families'], familiesInfo);
+  const families = familyInfo?.data?.families;
   const [isNoFamily, setIsNoFamily] = useState(true);
 
-  const filter = useRecoilValue(filterAtom);
-  const currentFilterId = families.find(
+  const filter = useRecoilValue(MainfilterAtom);
+  const currentFilterId = families?.find(
     (family) => family.nickname === filter
   )?.memberId;
   const { data, isLoading, refetch } = useQuery(
@@ -26,10 +27,12 @@ const ProgressingStamps = () => {
     () =>
       stampboardList({
         stampBoardGroup: 'in_progress',
-        memberId: currentFilterId,
+        partnerMemberId: currentFilterId,
       }),
     {
       enabled: !isNoFamily,
+      cacheTime: 0,
+      staleTime: 0,
     }
   );
 
@@ -40,7 +43,7 @@ const ProgressingStamps = () => {
   };
 
   useEffect(() => {
-    const noFamily = families.length === 0;
+    const noFamily = families?.length === 0;
 
     setIsNoFamily(noFamily);
   }, [families]);

@@ -8,6 +8,8 @@ import Card from '../Card/Card';
 
 interface CouponSwiperVAProps {
   handleChangeSwiper: (swiper: Swiper) => void;
+  isKid: boolean;
+  familyType: string;
   nickname: string;
   currentBoard: number;
   totalCoupons: number;
@@ -16,6 +18,8 @@ interface CouponSwiperVAProps {
 
 const CouponSwiperView = ({
   handleChangeSwiper,
+  isKid,
+  familyType,
   nickname,
   currentBoard,
   totalCoupons,
@@ -24,13 +28,25 @@ const CouponSwiperView = ({
   <Box key={nickname}>
     <Flex align="center" p="0 7.5%" mb="16px" gap="8px">
       <Text as="span" layerStyle="subtitle16Bd" color="blue.500">
-        To
+        {isKid ? 'From' : 'To'}
       </Text>
+      {isKid && (
+        <Box
+          p="4px 8px"
+          bg="gray.200"
+          border="1px solid rgba(0, 0, 0, 0.12)"
+          borderRadius="8px"
+          layerStyle="body14Sbd"
+          color="gray.700"
+          mr="2px"
+        >
+          {familyType}
+        </Box>
+      )}
       <Text layerStyle="subtitle18Sbd">{nickname}</Text>
     </Flex>
     {progressingCoupons.length > 0 ? (
       <SwiperComponent
-        grabCursor
         slidesPerView={1.15}
         height={200}
         centeredSlides
@@ -45,11 +61,18 @@ const CouponSwiperView = ({
         style={{ marginBottom: '38px' }}
         onSlideChange={handleChangeSwiper}
       >
-        {progressingCoupons.map(({ reward, rewardDate }) => (
-          <SwiperSlide key={reward}>
-            <Card reward={reward} rewardDate={rewardDate} />
-          </SwiperSlide>
-        ))}
+        {progressingCoupons.map(
+          ({ reward, rewardDate, couponId, rewardRequestDate }) => (
+            <SwiperSlide key={couponId} style={{ cursor: 'pointer' }}>
+              <Card
+                reward={reward}
+                rewardDate={rewardDate}
+                couponId={couponId}
+                rewardRequestDate={rewardRequestDate}
+              />
+            </SwiperSlide>
+          )
+        )}
         {progressingCoupons.length > 0 && (
           <Text
             pt="8px"

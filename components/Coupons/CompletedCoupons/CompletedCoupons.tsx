@@ -2,21 +2,27 @@ import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useRecoilValue } from 'recoil';
 
-import { stampboardList } from '@/apis/stamp';
-import { filterAtom } from '@/store/filter';
-import { userInfoAtom } from '@/store/userInfo';
+import { couponList } from '@/apis/coupon';
+import { familiesInfo } from '@/apis/family';
+import { CouponfilterAtom } from '@/store/filter';
 
 import CompletedStampsSkeleton from './CompletedCouponsSkeleton';
 import CompletedStampsView from './CompletedCouponsView';
 
-const CompletedStamps = () => {
-  const { families } = useRecoilValue(userInfoAtom);
+const CompletedCoupons = () => {
+  const { data: familyInfo } = useQuery(['families'], familiesInfo);
+  const families = familyInfo?.data?.families;
   const [isNoFamily, setIsNoFamily] = useState(true);
 
-  const filter = useRecoilValue(filterAtom);
+  const filter = useRecoilValue(CouponfilterAtom);
+  const currentFilterId = families?.find(
+    (family) => family.nickname === filter
+  )?.memberId;
+
   const { data, isLoading, refetch } = useQuery(
-    ['stampboardList', 'ended', filter],
-    () => stampboardList({ stampBoardGroup: 'ended' }),
+    ['couponList', 'rewarded', filter],
+    () =>
+      couponList({ couponState: 'rewarded', partnerMemberId: currentFilterId }),
     {
       enabled: !isNoFamily,
     }
@@ -29,12 +35,12 @@ const CompletedStamps = () => {
   };
 
   useEffect(() => {
-    const noFamily = families.length === 0;
+    const noFamily = families?.length === 0;
 
     setIsNoFamily(noFamily);
   }, [families]);
 
-  const CompletedStampsVAProps = {
+  const CompletedCouponsVAProps = {
     handleRefresh,
     cards,
     filter,
@@ -43,8 +49,8 @@ const CompletedStamps = () => {
   return isLoading ? (
     <CompletedStampsSkeleton filter={filter} />
   ) : (
-    <CompletedStampsView {...CompletedStampsVAProps} />
+    <CompletedStampsView {...CompletedCouponsVAProps} />
   );
 };
 
-export default CompletedStamps;
+export default CompletedCoupons;

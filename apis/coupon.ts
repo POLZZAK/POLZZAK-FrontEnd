@@ -2,7 +2,7 @@
 
 import API_URLS from '@/constants/apiUrls';
 
-import http from './http';
+import { http } from './http';
 
 export interface Family {
   memberId: number;
@@ -15,8 +15,10 @@ export interface Family {
 }
 
 export interface Coupon {
+  couponId: number;
   reward: string;
   rewardDate: Date;
+  rewardRequestDate: Date;
 }
 
 interface CouponListResponse {
@@ -27,6 +29,32 @@ interface CouponListResponse {
       family: Family;
       coupons: Coupon[];
     }[];
+  };
+}
+
+interface CouponDetailResponse {
+  data: {
+    code: 200;
+    messages: null;
+    data: {
+      couponId: number;
+      reward: string;
+      guardian: {
+        nickname: string;
+        profileUrl: string;
+      };
+      kid: {
+        nickname: string;
+        profileUrl: string;
+      };
+      missionContents: string[];
+      stampCount: number;
+      state: 'ISSUED' | 'REWARDED';
+      rewardDate: Date;
+      rewardRequestDate: Date;
+      startDate: Date;
+      endDate: Date;
+    };
   };
 }
 
@@ -54,22 +82,35 @@ interface CouponListError {
 }
 
 interface CouponListProps {
-  memberId?: number;
+  partnerMemberId?: number;
   couponState: string;
 }
 
 export const couponList = async ({
-  memberId,
+  partnerMemberId,
   couponState,
 }: CouponListProps) => {
   try {
     const { data }: CouponListResponse = await http.get(API_URLS.COUPON_LIST, {
-      params: memberId ? { memberId, couponState } : { couponState },
+      params: partnerMemberId
+        ? { partnerMemberId, couponState }
+        : { couponState },
     });
     return data;
   } catch (error) {
     const err = error as CouponListError;
     return err.response.data;
+  }
+};
+
+export const couponDetail = async (couponId: string) => {
+  try {
+    const { data }: CouponDetailResponse = await http.get(
+      API_URLS.COUPON_DETAIL(couponId)
+    );
+    return data.data;
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -96,6 +137,32 @@ export const receiveCoupon = async (stampBoardId: string) => {
         stampBoardId,
       }
     );
+    return data;
+  } catch (error) {
+    const err = error as CouponListError;
+    return err.response.data;
+  }
+};
+
+export const receiveGift = async (couponId: number | string) => {
+  try {
+    const { data }: IssueCouponResponse = await http.post(
+      API_URLS.RECEIVE_GIFT(couponId)
+    );
+
+    return data;
+  } catch (error) {
+    const err = error as CouponListError;
+    return err.response.data;
+  }
+};
+
+export const requestGift = async (couponId: number | string) => {
+  try {
+    const { data }: IssueCouponResponse = await http.post(
+      API_URLS.REQUEST_GIFT(couponId)
+    );
+
     return data;
   } catch (error) {
     const err = error as CouponListError;

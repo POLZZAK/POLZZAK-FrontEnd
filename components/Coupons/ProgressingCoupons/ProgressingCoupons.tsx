@@ -6,21 +6,27 @@ import { useQuery } from 'react-query';
 import { useRecoilValue } from 'recoil';
 
 import { couponList } from '@/apis/coupon';
-import { filterAtom } from '@/store/filter';
-import { userInfoAtom } from '@/store/userInfo';
+import { familiesInfo } from '@/apis/family';
+import { CouponfilterAtom } from '@/store/filter';
 
 import ProgressingCouponsNoFamiles from './ProgressingCouponsNoFamiles';
 import ProgressingCouponsSkeleton from './ProgressingCouponsSkeleton';
 import ProgressingCouponsView from './ProgressingCouponsView';
 
 const ProgressingCoupons = () => {
-  const { families } = useRecoilValue(userInfoAtom);
+  const { data: familyInfo } = useQuery(['families'], familiesInfo);
+  const families = familyInfo?.data?.families;
   const [isNoFamily, setIsNoFamily] = useState(true);
 
-  const filter = useRecoilValue(filterAtom);
+  const filter = useRecoilValue(CouponfilterAtom);
+  const currentFilterId = families?.find(
+    (family) => family.nickname === filter
+  )?.memberId;
+
   const { data, isLoading, refetch } = useQuery(
     ['couponList', 'issued', filter],
-    () => couponList({ couponState: 'issued' }),
+    () =>
+      couponList({ couponState: 'issued', partnerMemberId: currentFilterId }),
     {
       enabled: !isNoFamily,
     }
@@ -33,7 +39,7 @@ const ProgressingCoupons = () => {
   };
 
   useEffect(() => {
-    const noFamily = families.length === 0;
+    const noFamily = families?.length === 0;
 
     setIsNoFamily(noFamily);
   }, [families]);

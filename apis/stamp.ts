@@ -1,10 +1,10 @@
 /* eslint-disable import/prefer-default-export */
 import API_URLS from '@/constants/apiUrls';
 
-import http from './http';
+import { http } from './http';
 
 interface StampboardListProps {
-  memberId?: number;
+  partnerMemberId?: number;
   stampBoardGroup: string;
 }
 
@@ -62,49 +62,83 @@ interface StampboardCreateInfo {
   missionContents: string[];
 }
 
+interface StampboardEditInfo {
+  name: string;
+  goalStampCount: number;
+  reward: string;
+  missions: (
+    | {
+        id: number;
+        content: string;
+      }
+    | {
+        id: null;
+        content: string;
+      }
+  )[];
+}
+
+export interface StampboardDetailData {
+  stampBoardId: number;
+  name: string;
+  status: 'progress' | 'completed' | 'issued_coupon' | 'rewarded';
+  currentStampCount: number;
+  goalStampCount: 10 | 12 | 16 | 20 | 25 | 36 | 40 | 48 | 60;
+  kid: {
+    id: number;
+    nickname: string;
+    profileUrl: string;
+  };
+  reward: string;
+  missions: {
+    id: number;
+    content: string;
+  }[];
+  stamps: {
+    id: number;
+    stampDesignId: number;
+    missionContent: string;
+    createdDate: string;
+  }[];
+  missionRequestList: {
+    id: number;
+    missionId: number;
+    missionContent: string;
+    createdDate: string;
+  }[];
+  completedDate: string | null;
+  rewardDate: Date;
+  createdDate: string;
+  guardianMemberType: {
+    memberTypeDetailId: number;
+    detail: string;
+  };
+  guardian: {
+    id: number;
+    nickname: string;
+    profileUrl: string;
+  };
+}
+
 interface StampboardDetailResponse {
   data: {
     code: 200;
     messages: null;
-    data: {
-      stampBoardId: number;
-      name: string;
-      status: 'progress' | 'completed' | 'issued_coupon' | 'rewarded';
-      currentStampCount: number;
-      goalStampCount: 10 | 12 | 16 | 20 | 25 | 36 | 40 | 48 | 60;
-      reward: string;
-      missions: {
-        id: number;
-        content: string;
-      }[];
-      stamps: {
-        id: number;
-        stampDesignId: number;
-        missionContent: string;
-        createdDate: string;
-      }[];
-      missionRequestList: {
-        id: number;
-        missionId: number;
-        missionContent: string;
-        createdDate: string;
-      }[];
-      completedDate: string | null;
-      rewardDate: Date;
-      createdDate: string;
-    };
+    data: StampboardDetailData;
   };
 }
 
 export const stampboardList = async ({
-  memberId,
+  partnerMemberId,
   stampBoardGroup,
 }: StampboardListProps) => {
   try {
     const { data }: StampboardListResponse = await http.get(
       API_URLS.STAMPBOARD_LIST,
       {
-        params: memberId ? { memberId, stampBoardGroup } : { stampBoardGroup },
+        params: partnerMemberId
+          ? { partnerMemberId, stampBoardGroup }
+          : { stampBoardGroup },
       }
     );
     return data;
@@ -123,6 +157,21 @@ export const createStampboard = async (createInfo: StampboardCreateInfo) => {
   }
 };
 
+export const editStampboard = async (
+  createInfo: StampboardEditInfo,
+  stampboardId: string
+) => {
+  try {
+    const { data } = await http.patch(
+      `${API_URLS.STAMPBOARD}/${stampboardId}`,
+      createInfo
+    );
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const stampboardDetail = async (stampboardId: string) => {
   try {
     const { data }: StampboardDetailResponse = await http.get(
@@ -130,8 +179,7 @@ export const stampboardDetail = async (stampboardId: string) => {
     );
     return data;
   } catch (error) {
-    const err = error as StampboardListError;
-    return err.response.data;
+    console.error(error);
   }
 };
 
@@ -151,15 +199,23 @@ export const stampMissionRequest = async (
   }
 };
 
+export const refuseMission = async (missionRequestId: number) => {
+  try {
+    await http.delete(`${API_URLS.MISSION_REQUEST}/${missionRequestId}`);
+  } catch (error) {
+    return error;
+  }
+};
+
 export const createStamp = async (
   stampBoardId: number,
-  count: number,
+  missionRequestId: number | null,
   missionId: number,
   stampDesignId: number
 ) => {
   try {
     await http.post(API_URLS.STAMP(stampBoardId), {
-      count,
+      missionRequestId,
       missionId,
       stampDesignId,
     });
